@@ -1,22 +1,18 @@
 ---
-- name: Stop 3 Alpine containers
+- name: Stop specified Alpine containers
   hosts: localhost
   connection: local
   gather_facts: false
 
   vars:
-    alpine_image: alpine:latest
     container_names:
       - alpine1
       - alpine2
       - alpine3
 
   tasks:
-    - name: Create Alpine containers
+    - name: Stop Alpine containers
       community.docker.docker_container:
         name: "{{ item }}"
-        image: "{{ alpine_image }}"
         state: stopped
-        restart_policy: unless-stopped
-        command: sleep infinity
       loop: "{{ container_names }}"
