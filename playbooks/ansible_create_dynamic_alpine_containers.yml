@@ -1,0 +1,29 @@
+---
+- name: Create N Alpine containers with dynamic states
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    alpine_image: alpine:latest
+    total_containers: 5        # default
+    running_containers: 3      # default
+
+  tasks:
+    - name: Generate container list with states
+      set_fact:
+        containers: >-
+          {{
+            [ {'name': 'alpine' ~ i, 'state': 'started'} for i in range(running_containers) ]
+            +
+            [ {'name': 'alpine' ~ i, 'state': 'stopped'} for i in range(running_containers, total_containers) ]
+          }}
+
+    - name: Create Alpine containers with specified states
+      community.docker.docker_container:
+        name: "{{ item.name }}"
+        image: "{{ alpine_image }}"
+        state: "{{ item.state }}"
+        restart_policy: unless-stopped
+        command: sleep infinity
+      loop: "{{ containers }}"
