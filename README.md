@@ -1,10 +1,10 @@
-## Sstep-by-step guide to **synchronize your local machine** with your **private GitHub repo** using **SSH**:
+# Step-by-step guide to **synchronize your local machine** with your **private GitHub repo** using **SSH**:
 
 ---
 
 ## 🔧 Step-by-Step: Sync Local Folder with Private GitHub Repo via SSH
 
-### ✅ 1. **Ensure SSH Key Is Set Up and Working**
+### 1. Ensure SSH Key Is Set Up and Working
 
 You've already uploaded your SSH public key to GitHub — now test it:
 
@@ -22,7 +22,7 @@ If that works, you're good to go.
 
 ---
 
-### ✅ 2. **Clone the Private Repo Using SSH**
+### 2. Clone the Private Repo Using SSH
 
 If you haven't cloned it yet:
 
@@ -34,7 +34,7 @@ This will create a local copy of your private repo in `~/git/ansible`.
 
 ---
 
-### ✅ 3. **Work on Your Local Files**
+### 3. Work on Your Local Files
 
 You can now copy or move your playbooks into this repo:
 
@@ -45,7 +45,7 @@ cd ~/git/ansible
 
 ---
 
-### ✅ 4. **Commit and Push Changes**
+### 4. Commit and Push Changes
 
 ```bash
 git add .
@@ -57,7 +57,7 @@ git push origin main
 
 ---
 
-### ✅ 5. **Keep It in Sync**
+### 5. Keep It in Sync
 
 Whenever you make changes locally:
 
@@ -67,7 +67,3 @@ git add .
 git commit -m "Your message"
 git push origin main      # Push your updates
 ```
-
----
-
-Would you like a script to automate syncing your local playbooks to GitHub regularly?
