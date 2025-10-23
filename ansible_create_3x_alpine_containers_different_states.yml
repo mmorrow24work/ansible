@@ -1,0 +1,30 @@
+---
+- name: Create 3 Alpine containers with different behaviors
+  hosts: localhost
+  connection: local
+  gather_facts: false
+
+  vars:
+    alpine_image: alpine:latest
+
+  tasks:
+    - name: Create and run alpine1 with sleep infinity
+      community.docker.docker_container:
+        name: alpine1
+        image: "{{ alpine_image }}"
+        state: started
+        restart_policy: unless-stopped
+        command: sleep infinity
+    - name: Create and run alpine2 with default command (will exit immediately)
+      community.docker.docker_container:
+        name: alpine2
+        image: "{{ alpine_image }}"
+        state: started
+        restart_policy: no
+
+    - name: Create alpine3 but do not start it
+      community.docker.docker_container:
+        name: alpine3
+        image: "{{ alpine_image }}"
+        state: stopped
+
