@@ -1,0 +1,35 @@
+
+---
+- name: Continuously send SNMP traps for port 5 link state
+  hosts: localhost
+  gather_facts: no
+  vars:
+    snmp_host: "192.168.1.119"
+    snmp_community: "public"
+    oid_trap: "1.3.6.1.6.3.1.1.5.4"
+    oid_ifIndex: "1.3.6.1.2.1.2.2.1.1.5"
+    oid_ifAdminStatus: "1.3.6.1.2.1.2.2.1.7.5"
+    oid_ifOperStatus: "1.3.6.1.2.1.2.2.1.8.5"
+    sleep_interval: 5
+  tasks:
+    - name: Loop indefinitely sending SNMP traps
+      ansible.builtin.shell: |
+        while true; do
+          # Link UP
+          snmptrap -v2c -c {{ snmp_community }} {{ snmp_host }} '' {{ oid_trap }} \
+          {{ oid_ifIndex }} i 5 \
+          {{ oid_ifAdminStatus }} i 1 \
+          {{ oid_ifOperStatus }} i 1
+          sleep {{ sleep_interval }}
+          echo; date; echo "port 5 link UP"
+
+          # Link DOWN
+          snmptrap -v2c -c {{ snmp_community }} {{ snmp_host }} '' {{ oid_trap }} \
+          {{ oid_ifIndex }} i 5 \
+          {{ oid_ifAdminStatus }} i 1 \
+          {{ oid_ifOperStatus }} i 2
+          sleep {{ sleep_interval }}
+          echo; date; echo "port 5 link DOWN"
+        done
+      args:
+        executable: /bin/bash
